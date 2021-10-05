@@ -1,0 +1,75 @@
+.ContainerMensaje {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 0fr 0fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "tituloMensaje tituloMensaje"
+      "camposMensaje ListadoMensaje";
+    border: 1px ;
+    background-color: antiquewhite;
+  }
+  
+  .tituloMensaje { grid-area: tituloMensaje; }
+  
+
+  .campoMensaje {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 2fr 2fr 2fr 2fr 2fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+      "idMensaje"
+      "textoMensaje"
+      "botonMensaje"; 
+    grid-area: campoMensaje; 
+  }
+
+  .idMensaje {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "idMensajeE"
+      "idMensajeV";
+    grid-area: idMensaje;
+  }
+  
+  .idMensajeE { grid-area: idMensajeE; }
+  
+  .idMensajeV { grid-area: idMensajeV; }
+  
+  .textoMensaje {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "textoMensajeE"
+      "textoMensajeV";
+    grid-area: textoMensaje;
+  }
+  
+  .textoMensajeE { grid-area: textoMensajeE; }
+  
+  .textoMensajeV { grid-area: textoMensajeV; }
+  
+    .botonMensaje {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "botonMensajeA";
+    grid-area: botonMensaje;
+    padding-top: 1rem;
+  }
+  
+  .botonMensajeA { grid-area: botonMensajeA; }
+  
+  .ListadoMensaje { grid-area: ListadoMensaje; }

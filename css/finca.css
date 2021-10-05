@@ -1,0 +1,127 @@
+.ContainerFinca {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 0fr 0fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "tituloFinca tituloFinca"
+      "camposFinca ListadoFinca";
+    border: 1px ;
+    background-color: antiquewhite;
+  }
+  
+  .tituloFinca { grid-area: tituloFinca; }
+  
+
+  .campoFinca {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 2fr 2fr 2fr 2fr 2fr 2fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+      "idFinca"
+      "nameFinca"
+      "addressFinca"
+      "exensionFinca"
+      "categoriaFinca"
+      "botonFinca"; 
+    grid-area: campoFinca; 
+  }
+
+
+  .idFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "idFincaE"
+      "idFincaV";
+    grid-area: idFinca;
+  }
+  
+  .idFincaE { grid-area: idFincaE; }
+  
+  .idFincaV { grid-area: idFincaV; }
+  
+  .nameFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "nameFincaE"
+      "nameFincaV";
+    grid-area: nameFinca;
+  }
+  
+  .nameFincaE { grid-area: nameFincaE; }
+  
+  .nameFincaV { grid-area: nameFincaV; }
+  
+  .addressFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "addressFincaE"
+      "addressFincaV";
+    grid-area: addressFinca;
+  }
+  
+  .addressFincaE { grid-area: addressFincaE; }
+  
+  .addressFincaV { grid-area: addressFincaV; }
+  
+  .exensionFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "exensionFincaE"
+      "exensionFincaV";
+    grid-area: exensionFinca;
+  }
+  
+  .exensionFincaE { grid-area: exensionFincaE; }
+  
+  .exensionFincaV { grid-area: exensionFincaV; }
+  
+  .categoriaFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "categoriaFincaE"
+      "categoriaFincaV";
+    grid-area: categoriaFinca;
+  }
+  
+  .categoriaFincaE { grid-area: categoriaFincaE; }
+  
+  .categoriaFincaV { grid-area: categoriaFincaV; }
+  
+  .botonFinca {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "botonFincaA";
+    grid-area: botonFinca;
+    padding-top: 1rem;
+  }
+  
+  .botonFincaA { grid-area: botonFincaA; }
+  
+  .ListadoFinca { grid-area: ListadoFinca; }
