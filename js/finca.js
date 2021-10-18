@@ -1,133 +1,142 @@
-function listarFincas(){
+function comboFinca() {
+    let urlA = urlApi() + "/Farm/all";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/farm/farm',
+        url: urlA,
         type: "GET",
-        dataType:  "json",
-        success: function(respuesta){
+        dataType: "json",
+        success: function(respuesta) {
             console.log(respuesta);
-            $("#ListadoFinca").html("");
-            pintarFincas(respuesta.items);
+            $("#farm").html("");
+            let myselect = '<select class="form-select" id="combofinca" required>';
+            myselect +='<option></<option>';
+            for (i = 0; i < respuesta.length; i++) {
+                myselect += "<option value=" + respuesta[i].id + ">" + respuesta[i].name + "</option>";
+            }
+            myselect += "</select >";
+            myselect += '<label for="combofinca">Finca</label>';
+            $("#farm").html(myselect);
         },
-        error:function(){
+        error: function() {
             console.log('error');
         }
 
     })
 }
 
-function pintarFincas(items){
-    let myTable ="<table>";
+function listarFincas() {
+    let urlA = urlApi() + "/Farm/all";
+    $.ajax({
+        url: urlA,
+        type: "GET",
+        dataType: "json",
+        success: function(respuesta) {
+            console.log(respuesta);
+            $("#listado").html("");
+            pintarFincas(respuesta);
+        },
+        error: function() {
+            console.log('error');
+        }
+
+    })
+}
+
+function pintarFincas(items) {
+    let myTable = '<table class="table table-bordered">';
+    myTable += '<thead class="table-dark">';
     myTable += "<tr>";
-    myTable += "<th>Id</th>";
     myTable += "<th>Nombre</th>";
     myTable += "<th>Dirección</th>";
     myTable += "<th>Exensión</th>";
     myTable += "<th>Categoria</th>";
-    myTable += '<th>Acción</th>';
+    myTable += "<th>Descripcion</th>";
+    myTable += "<th>Acciones</th>";
     myTable += "</tr>";
-    for(i=0;i<items.length ;i++){
+    myTable += "</thead><tbody>"
+
+    for (i = 0; i < items.length; i++) {
+        nameCategory = items[i]?.category?.name == null ? "" : items[i].category?.name;
         myTable += "<tr>";
-        myTable += "<td>"+items[i].id+"</td>";
-        myTable += "<td>"+items[i].name+"</td>";
-        myTable += "<td>"+items[i].address+"</td>";
-        myTable += "<td>"+items[i].exension+"</td>";
-        myTable += "<td>"+items[i].category_id+"</td>";
-        myTable += '<td><button class="botonA" onclick="EliminarFincas('+items[i].id+')">Eliminar</button> </td>';
+        myTable += "<td>" + items[i].name + "</td>";
+        myTable += "<td>" + items[i].address + "</td>";
+        myTable += "<td>" + items[i].extension + "</td>";
+        myTable += "<td>" + nameCategory + "</td>";
+        myTable += "<td>" + items[i].description + "</td>";
+        myTable += '<td>';
+        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarFinca(' + items[i].id + ')">Eliminar</button>';
+        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarFinca(' + items[i].id + ')">Actualizar</button> </td>';
         myTable += "</tr>";
     }
-    myTable += "</tr>";
-
+    myTable += "</tbody>";
     myTable += "</table>";
-    $("#ListadoFinca").html(myTable);
+    $("#listado").html(myTable);
 }
 
-function guardarFinca(){    
-    let myData={
-        id: $("#idFinca").val(),
-        name: $("#nameFinca").val(),
-        address : $("#addressFinca").val(),
-        exension : $("#exensionFinca").val(),
-        category_id : $("#categoriaFinca").val()
+function guardarFinca() {
+    var e = document.getElementById("combocategory");
+    var category = e.options[e.selectedIndex].value;
+    let myCate = { id: category };
+
+    let myData = {
+        name: $("#name").val(),
+        address: $("#address").val(),
+        extension: $("#extension").val(),
+        category: myCate,
+        description: $("#description").val()
+
     };
     let dataToSend = JSON.stringify(myData);
+
+    let urlA = urlApi() + "/Farm/save";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/farm/farm',
+        url: urlA,
         type: "POST",
-        dataType:  "json",
-        data : dataToSend,
+        dataType: "json",
+        data: dataToSend,
         contentType: 'application/json',
-        complete: function(respuesta){
+        complete: function(respuesta) {
             $("#ListadoFinca").empty();
-            $("#idFinca").val(""),
-            $("#nameFinca").val(""),
-            $("#addressFinca").val(""),
-            $("#exensionFinca").val(""),
-            $("#categoriaFinca").val("")
+            $("#name").val(""),
+                $("#address").val(""),
+                $("#extension").val(""),
+                $("#combocategory").val(""),
+                $("#description").val("")
             listarFincas();
             console.log("Guardado!");
-            
-        }   , error: function(textStatus){
+
+        },
+        error: function(textStatus) {
             console.log(textStatus)
         }
     })
 }
 
-function actualizarFinca(){
-    let myData={
-        id: $("#idFinca").val(),
-        name: $("#nameFinca").val(),
-        address : $("#addressFinca").val(),
-        exension : $("#exensionFinca").val(),
-        category_id : $("#categoriaFinca").val()
-    };
-    let dataToSend = JSON.stringify(myData);
-    $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/farm/farm',
-        type: "PUT",
-        contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
-        $("#ListadoFinca").empty();
-        $("#idFinca").val(""),
-        $("#nameFinca").val(""),
-        $("#addressFinca").val(""),
-        $("#exensionFinca").val(""),
-        $("#categoriaFinca").val("")
-        listarFincas();
-        console.log("Actualizado!");
-        console.log('SUCCESS');
-    }).fail(function (msg) {
-        console.log('FAIL');
-    }).always(function (msg) {
-        console.log('ALWAYS');
-    });    
-}
 
-
-function EliminarFincas(id){
-    let myData={
+function EliminarFincas(id) {
+    let myData = {
         id: id
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA = urlApi() + "/Farm/delete";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/farm/farm',
+        url: urlA,
         type: "DELETE",
-        dataType:  "json",
+        dataType: "json",
         contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
+        data: dataToSend,
+    }).done(function() {
         $("#ListadoFinca").empty();
         $("#idFinca").val(""),
-        $("#nameFinca").val(""),
-        $("#addressFinca").val(""),
-        $("#exensionFinca").val(""),
-        $("#categoriaFinca").val("")
+            $("#nameFinca").val(""),
+            $("#addressFinca").val(""),
+            $("#extensionFinca").val(""),
+            $("#categoriaFinca").val("")
         listarFincas();
         console.log("Eliminado!");
         console.log('SUCCESS');
-    }).fail(function (msg) {
+    }).fail(function(msg) {
         console.log('FAIL');
-    }).always(function (msg) {
+    }).always(function(msg) {
         console.log('ALWAYS');
-    });    
+    });
 }

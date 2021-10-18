@@ -3,171 +3,35 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Principal</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='./css/finca.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='./css/cliente.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='./css/mensaje.css'>
+
+    <link rel='stylesheet' type='text/css' media='screen' href='./css/maquetado.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 </head>
-
-<body onload="listarFincas(); listarMensajes(); listarClientes();">
-    <div class="ContainerFinca">
-        <div class="tituloFinca">
-            <h1>Fincas</h1>
+<body >
+    <div class="contenedor">   
+        <header class="menus" >            
+        </header >   
+        
+        <div class="titulo">
+            <h1>Busca tu confort</h1>
         </div>
-        <div class="camposFinca">
-            <div class="idFinca">
-                <div class="idFincaE">
-                    <label class="lab" for="idFinca">Id</label>
-                </div>
-                <div class="idFincaV">
-                    <input type="number" name="idFinca" id="idFinca" placeholder="Id">
-                </div>
-            </div>
-            <div class="nameFinca">
-                <div class="nameFincaE">
-                    <label class="lab" for="nameFinca">Nombre</label>
-                </div>
-                <div class="nameFincaV">
-                    <input type="text" name="nameFinca" id="nameFinca" placeholder="Nombre">
-                </div>
-            </div>
-            <div class="addressFinca">
-                <div class="addressFincaE">
-                    <label class="lab" for="addressFinca">Dirección</label>
-                </div>
-                <div class="addressFincaV">
-                    <input type="text" name="addressFinca" id="addressFinca" placeholder="Dirección">
-                </div>
-            </div>
-            <div class="exensionFinca">
-                <div class="exensionFincaE">
-                    <label class="lab" for="exensionFinca">Exesión</label>
-                </div>
-                <div class="exensionFincaV">
-                    <input type="number" name="exensionFinca" id="exensionFinca" placeholder="Exesión">
-                </div>
-            </div>
-            <div class="categoriaFinca">
-                <div class="categoriaFincaE">
-                    <label class="lab" for="categoriaFinca">Categoría</label>
-                </div>
-                <div class="categoriaFincaV">
-                    <input type="number" name="categoriaFinca" id="categoriaFinca" placeholder="Categoría">
-                </div>
-            </div>
-            <div class="botonFinca">
-                <div class="botonFincaA">
-                    <button onclick="guardarFinca()">Guardar</button>
-                    <button onclick="actualizarFinca()">Actualizar</button>
-                    <button onclick="listarFincas()">Listar</button>
-                </div>
-            </div>
-        </div>
-        <div class="ListadoFinca" id="ListadoFinca">
-
-        </div>
+        <div class="formulario"></div>
+        <div class="Listado"></div>
+        <div class="pie"></div>
     </div>
-
-    <div>
-        </br>
-    </div>
-
-    <div class="ContainerCliente">
-        <div class="tituloCliente">
-            <h1>Clientes</h1>
-        </div>
-        <div class="camposCliente">
-            <div class="idCliente">
-                <div class="idClienteE">
-                    <label class="lab" for="idCliente">Id</label>
-                </div>
-                <div class="idClienteV">
-                    <input type="number" name="idCliente" id="idCliente" placeholder="Id">
-                </div>
-            </div>
-            <div class="nameCliente">
-                <div class="nameClienteE">
-                    <label class="lab" for="nameCliente">Nombre</label>
-                </div>
-                <div class="nameClienteV">
-                    <input type="text" name="nameCliente" id="nameCliente" placeholder="Nombre">
-                </div>
-            </div>
-            <div class="emailCliente">
-                <div class="emailClienteE">
-                    <label class="lab" for="emailCliente">eMail</label>
-                </div>
-                <div class="emailClienteV">
-                    <input type="text" name="emailCliente" id="emailCliente" placeholder="eMail">
-                </div>
-            </div>
-            <div class="ageCliente">
-                <div class="ageClienteE">
-                    <label class="lab" for="ageCliente">Edad</label>
-                </div>
-                <div class="ageClienteV">
-                    <input type="number" name="ageCliente" id="ageCliente" placeholder="Edad">
-                </div>
-            </div>
-            
-            <div class="botonCliente">
-                <div class="botonClienteA">
-                    <button onclick="guardarCliente()">Guardar</button>
-                    <button onclick="actualizarCliente()">Actualizar</button>
-                    <button onclick="listarClientes()">Listar</button>
-                </div>
-            </div>
-        </div>
-        <div class="ListadoCliente" id="ListadoCliente">
-    
-        </div>
-    </div>
-
-    <div>
-        </br>
-    </div>
-
-    <div class="ContainerMensaje">
-        <div class="tituloMensaje">
-            <h1>Mensajes</h1>
-        </div>
-        <div class="camposMensaje">
-            <div class="idMensaje">
-                <div class="idMensajeE">
-                    <label class="lab" for="idMensaje">Id</label>
-                </div>
-                <div class="idMensajeV">
-                    <input type="number" name="idMensaje" id="idMensaje" placeholder="Id">
-                </div>
-            </div>
-            <div class="textoMensaje">
-                <div class="textoMensajeE">
-                    <label class="lab" for="textoMensaje">Texto del Mensaje</label>
-                </div>
-                <div class="textoMensajeV">
-                    <input type="text" name="textoMensaje" id="textoMensaje" placeholder="Texto del Mensaje">
-                </div>
-            </div>
-            <div class="botonMensaje">
-                <div class="botonMensajeA">
-                    <button onclick="guardarMensaje()">Guardar</button>
-                    <button onclick="actualizarMensaje()">Actualizar</button>
-                    <button onclick="listarMensajes()">Listar</button>
-                </div>
-            </div>
-        </div>
-        <div class="ListadoMensaje" id="ListadoMensaje">
-    
-        </div>
-    </div>
-
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="./js/finca.js"></script>
-    <script type="text/javascript" src="./js/cliente.js"></script>
-    <script type="text/javascript" src="./js/mensaje.js"></script>
+    <script type="text/javascript" src="./js/maquetado.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.menus').load('./menu.html');
+        });
+    </script>
 </body>
 
 </html>

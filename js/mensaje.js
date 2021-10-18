@@ -1,12 +1,13 @@
 function listarMensajes(){
+    let urlA= urlApi() +"/Message/all";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/message//message',
+        url: urlA,
         type: "GET",
         dataType:  "json",
         success: function(respuesta){
             console.log(respuesta);
-            $("#ListadoMensaje").html("");
-            pintarMensajes(respuesta.items);
+            $("#listado").html("");
+            pintarMensajes(respuesta);
         },
         error:function(){
             console.log('error');
@@ -16,41 +17,58 @@ function listarMensajes(){
 }
 
 function pintarMensajes(items){
-    let myTable ="<table>";
+    let myTable = '<table class="table table-bordered">';
+    myTable += '<thead class="table-dark">';
     myTable += "<tr>";
-    myTable += "<th>Id</th>";
+    myTable += "<th>Finca</th>";
+    myTable += "<th>Cliente</th>";
     myTable += "<th>Texto del Mensaje</th>";
-    myTable += '<th>Acción</th>';
+    myTable += "<th>Acciones</th>";
     myTable += "</tr>";
+    myTable += "</thead><tbody>"
     for(i=0;i<items.length ;i++){
         myTable += "<tr>";
-        myTable += "<td>"+items[i].id+"</td>";
-        myTable += "<td>"+items[i].messagetext+"</td>";
-        myTable += '<td><button class="botonA" onclick="EliminarMensajes('+items[i].id+')">Eliminar</button> </td>';
+        myTable += "<td>"+items[i]?.farm?.name+"</td>";
+        myTable += "<td>"+items[i]?.client?.name+"</td>";
+        myTable += "<td>"+items[i].messageText+"</td>";       
+        myTable += '<td>';
+        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarMensaje(' + items[i].idClient + ')">Eliminar</button>';
+        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarMensaje(' + items[i].id + ')">Actualizar</button> </td>';
         myTable += "</tr>";
+        
     }
-    myTable += "</tr>";
-
+    myTable += "</tbody>";
     myTable += "</table>";
-    $("#ListadoMensaje").html(myTable);
+    $("#listado").html(myTable);
 }
 
 function guardarMensaje(){    
+    var e = document.getElementById("combocliente");
+    var client = e.options[e.selectedIndex].value;
+    let myCli={idClient: client};
+
+    var f = document.getElementById("combofinca");
+    var farm = f.options[f.selectedIndex].value;
+    let myFarm={id: farm};
+
     let myData={
-        id: $("#idMensaje").val(),
-        messagetext: $("#textoMensaje").val()        
+        client:myCli,
+        farm:myFarm,
+        messageText: $("#messageText").val()        
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Message/save";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/message//message',
+        url: urlA,
         type: "POST",
         dataType:  "json",
         data : dataToSend,
         contentType: 'application/json',
         complete: function(respuesta){
-            $("#ListadoMensaje").empty();
-            $("#idMensaje").val(""),
-            $("#textoMensaje").val("")
+            $("#listado").empty();
+            $("#combofinca").val(""),
+            $("#combocliente").val(""),
+            $("#messageText").val("")
             listarMensajes();
             console.log("Guardado!");
             
@@ -66,13 +84,14 @@ function actualizarMensaje(){
         messagetext: $("#textoMensaje").val()        
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Message/save";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/message//message',
+        url: urlA,
         type: "PUT",
         contentType: 'application/json',
         data : dataToSend,
     }).done(function () {
-        $("#ListadoMensaje").empty();
+        $("#listado").empty();
         $("#idMensaje").val(""),
         $("#textoMensaje").val("")
         listarMensajes();
@@ -91,14 +110,15 @@ function EliminarMensajes(id){
         id: id
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Message/delete";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/message//message',
+        url: urlA,
         type: "DELETE",
         dataType:  "json",
         contentType: 'application/json',
         data : dataToSend,
     }).done(function () {
-        $("#ListadoMensaje").empty();
+        $("#listado").empty();
         $("#idMensaje").val(""),
         $("#textoMensaje").val("")
         listarMensajes();

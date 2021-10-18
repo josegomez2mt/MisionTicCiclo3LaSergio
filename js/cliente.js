@@ -1,12 +1,39 @@
-function listarClientes(){
+function comboCliente(){
+    let urlA= urlApi() +"/Client/all";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',
+        url: urlA,
         type: "GET",
         dataType:  "json",
         success: function(respuesta){
             console.log(respuesta);
-            $("#ListadoCliente").html("");
-            pintarClientes(respuesta.items);
+            $("#client").html("");            
+            let myselect = '<select class="form-select" id="combocliente" required>';
+            myselect +='<option></<option>';
+            for (i = 0; i < respuesta.length; i++) {
+                myselect += "<option value=" + respuesta[i].idClient + ">" + respuesta[i].name + "</option>";
+            }
+            myselect += "</select >";
+            myselect += '<label for="combocliente">Cliente</label>';
+
+            $("#client").html(myselect );
+        },
+        error:function(){
+            console.log('error');
+        }
+
+    })
+}
+
+function listarClientes(){
+    let urlA= urlApi() +"/Client/all";
+    $.ajax({
+        url: urlA,
+        type: "GET",
+        dataType:  "json",
+        success: function(respuesta){
+            console.log(respuesta);
+            $("#listado").html("");
+            pintarClientes(respuesta);
         },
         error:function(){
             console.log('error');
@@ -16,49 +43,55 @@ function listarClientes(){
 }
 
 function pintarClientes(items){
-    let myTable ="<table>";
+    let myTable = '<table class="table table-bordered">';
+    myTable += '<thead class="table-dark">';
     myTable += "<tr>";
-    myTable += "<th>Id</th>";
+    
     myTable += "<th>Nombre</th>";
     myTable += "<th>eMail</th>";
-    myTable += "<th>Edad</th>";    
-    myTable += '<th>Acción</th>';
+    myTable += "<th>Edad</th>";
+    myTable += "<th>Acciones</th>";
     myTable += "</tr>";
+    myTable += "</thead><tbody>"
+    
     for(i=0;i<items.length ;i++){
         myTable += "<tr>";
-        myTable += "<td>"+items[i].id+"</td>";
         myTable += "<td>"+items[i].name+"</td>";
         myTable += "<td>"+items[i].email+"</td>";
         myTable += "<td>"+items[i].age+"</td>";        
-        myTable += '<td><button class="botonA" onclick="EliminarClientes('+items[i].id+')">Eliminar</button> </td>';
+        myTable += '<td>';
+        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarFinca(' + items[i].idClient + ')">Eliminar</button>';
+        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarFinca(' + items[i].idClient + ')">Actualizar</button> </td>';
         myTable += "</tr>";
-    }
-    myTable += "</tr>";
 
+    }
+    myTable += "</tbody>";
     myTable += "</table>";
-    $("#ListadoCliente").html(myTable);
+    $("#listado").html(myTable);
 }
 
 function guardarCliente(){    
     let myData={
-        id: $("#idCliente").val(),
-        name: $("#nameCliente").val(),
-        email : $("#emailCliente").val(),
-        age : $("#ageCliente").val()
+        name: $("#name").val(),
+        email : $("#email").val(),
+        age : $("#age").val(),
+        password : $("#password").val()
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Client/save";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',
+        url: urlA,
         type: "POST",
         dataType:  "json",
         data : dataToSend,
         contentType: 'application/json',
         complete: function(respuesta){
-            $("#ListadoCliente").empty();
+            $("#listado").empty();
             $("#idCliente").val(""),
-            $("#nameCliente").val(""),
-            $("#emailCliente").val(""),
-            $("#ageCliente").val("")
+            $("#name").val(""),
+            $("#email").val(""),
+            $("#age").val(""),
+            $("#password").val("")
             listarClientes();
             console.log("Guardado!");
             
@@ -71,22 +104,24 @@ function guardarCliente(){
 function actualizarCliente(){
     let myData={
         id: $("#idCliente").val(),
-        name: $("#nameCliente").val(),
-        email : $("#emailCliente").val(),
-        age : $("#ageCliente").val()
+        name: $("#name").val(),
+        email : $("#email").val(),
+        age : $("#age").val(),
+        password: $("#password").val("")
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Client/save";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',
+        url: urlA,
         type: "PUT",
         contentType: 'application/json',
         data : dataToSend,
     }).done(function () {
-        $("#ListadoCliente").empty();
+        $("#listado").empty();
         $("#idCliente").val(""),
-        $("#nameCliente").val(""),
-        $("#emailCliente").val(""),
-        $("#ageCliente").val("")
+        $("#name").val(""),
+        $("#email").val(""),
+        $("#age").val("")
         listarClientes();
         console.log("Actualizado!");
         console.log('SUCCESS');
@@ -103,18 +138,19 @@ function EliminarClientes(id){
         id: id
     };
     let dataToSend = JSON.stringify(myData);
+    let urlA= urlApi() +"/Client/delete";
     $.ajax({
-        url:'https://g9758d990ec8bbf-db202109232115.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',
+        url: urlA,
         type: "DELETE",
         dataType:  "json",
         contentType: 'application/json',
         data : dataToSend,
     }).done(function () {
-        $("#ListadoCliente").empty();
+        $("#listado").empty();
         $("#idCliente").val(""),
-        $("#nameCliente").val(""),
-        $("#emailCliente").val(""),
-        $("#ageCliente").val("")
+        $("#name").val(""),
+        $("#email").val(""),
+        $("#age").val("")
         listarClientes();
         console.log("Eliminado!");
         console.log('SUCCESS');
