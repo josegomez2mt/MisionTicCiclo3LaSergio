@@ -69,9 +69,10 @@ function pintarReservas(items){
         myTable += "<td>"+eMail+"</td>";
         myTable += "<td>"+score+"</td>";
         myTable += '<td>';
-        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarFinca(' + items[i].idReservation + ')">Eliminar</button>';
-        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarFinca(' + items[i].idReservation + ')">Actualizar</button> </td>';
-        myTable += "</tr>";
+        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarReserva(' + items[i].idReservation + ')">Eliminar</button>';
+        
+        myTable += '<button class="btn btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#ModalEstatico" data-bs-id="' + escape(JSON.stringify(items[i])) +'" data-bs-title="Reserva">Actualizar</button> </td>';  
+
 
     }
     myTable += "</tbody>";
@@ -99,74 +100,85 @@ function guardarReserva(){
     $.ajax({
         url: urlA,
         type: "POST",
-        dataType:  "json",
-        data : dataToSend,
-        contentType: 'application/json',
-        complete: function(respuesta){
-            $("#combofinca").val(""),
-            $("#combocliente").val(""),
-            $("#startDate").empty();
-            $("#devolutionDate").val("")
-            listarReservas();
-            console.log("Guardado!");
-            
-        }   , error: function(textStatus){
+        dataType: "json",
+        data: dataToSend,
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            window.location.reload();
+            alert("Se guardo correctamente");
+        },
+        error: function (textStatus) {
+            alert("No se guardo correctamente");
             console.log(textStatus)
         }
     })
 }
 
-function actualizarReserva(){
+function actualizarReserva(){    
+    var e = document.getElementById("m_combocliente");
+    var client = e.options[e.selectedIndex].value;
+    let myCli={idClient: client};
+
+    var f = document.getElementById("m_combofinca");
+    var farm   = f.options[f.selectedIndex].value;
+    let myFarm = {id: farm};
+
     let myData={
-        id: $("#idReserva").val(),
-        Reservationtext: $("#textoReserva").val()        
+        idReservation: $("#m_idReservation").val(),
+        client:myCli,
+        farm:myFarm,
+        startDate: $("#m_startDate").val(),
+        devolutionDate: $("#m_devolutionDate").val()        
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA= urlApi() +"/Reservation/save";
+    let urlA= urlApi() +"/Reservation/update";
     $.ajax({
         url: urlA,
         type: "PUT",
-        contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
-        $("#combofinca").val(""),
-        $("#combocliente").val(""),
-        $("#startDate").empty();
-        $("#devolutionDate").val("")
-        listarReservas();
-        console.log("Actualizado!");
-        console.log('SUCCESS');
-    }).fail(function (msg) {
-        console.log('FAIL');
-    }).always(function (msg) {
-        console.log('ALWAYS');
-    });    
+        dataType: "json",
+        data: dataToSend,
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            window.location.reload();
+            alert("Se actualizo correctamente");
+        },
+        error: function (textStatus) {
+            alert("No se actualizo");
+            console.log(textStatus)
+        }
+    })
 }
 
-
-function EliminarReservas(id){
+function EliminarReserva(id){
+    /*
     let myData={
         id: id
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA= urlApi() +"/Reservation/delete";
+    */
+    let urlA = urlApi() + "/Reservation/delete/" + id;    
     $.ajax({
         url: urlA,
         type: "DELETE",
         dataType:  "json",
-        contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
-        $("#combofinca").val(""),
-        $("#combocliente").val(""),
-        $("#startDate").empty();
-        $("#devolutionDate").val("")
-        listarReservas();
-        console.log("Eliminado!");
-        console.log('SUCCESS');
-    }).fail(function (msg) {
-        console.log('FAIL');
-    }).always(function (msg) {
-        console.log('ALWAYS');
-    });    
+        contentType: "application/json; charset=utf-8",
+        /*data: dataToSend,*/
+        complete: function (repuesta) {
+            /*
+            $("#combofinca").val(""),
+            $("#combocliente").val(""),
+            $("#startDate").empty();
+            $("#devolutionDate").val("")
+            listarReservas();
+            */
+           console.log("repuesta "+repuesta);
+            window.location.reload();
+            alert("Se elimino correctamente");
+        },
+        error: function (textStatus) {
+            console.log("textStatus "+ textStatus)
+            alert("No se elimino");
+        }
+    });
 }
+

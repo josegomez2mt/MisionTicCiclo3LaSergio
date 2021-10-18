@@ -11,7 +11,7 @@
 
 </head>
 
-<body onload="listarCalificaciones(); comboReserva();">
+<body onload=" validacion(); listarCalificaciones(); comboReserva();">
     <div class="contenedor">
         <header class="menus">
         </header>
@@ -19,7 +19,7 @@
             <h1>Calificación</h1>
         </div>
         <div class="formulario">
-            <form class="campos" action="javascript:guardarFinca();">
+            <form class="campos needs-validation"  action="javascript:guardarFinca();" novalidate>
                 <div class="form-floating mb-3" id="reservation">
                     
                 </div>

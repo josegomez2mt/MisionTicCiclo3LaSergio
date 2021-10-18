@@ -1,67 +1,81 @@
-function comboCliente(){
-    let urlA= urlApi() +"/Client/all";
+
+
+function comboCliente() {
+    comboCliente1("#client", "combocliente", "");
+}
+
+function comboClienteModal(opcion) {
+    comboCliente1("#m_client", "m_combocliente", opcion);
+}
+function comboCliente1(idDiv, idSelect, opcion) {
+    let urlA = urlApi() + "/Client/all";
     $.ajax({
         url: urlA,
         type: "GET",
-        dataType:  "json",
-        success: function(respuesta){
-            console.log(respuesta);
-            $("#client").html("");            
-            let myselect = '<select class="form-select" id="combocliente" required>';
-            myselect +='<option></<option>';
+        dataType: "json",
+        success: function (respuesta) {
+            $(idDiv).html("");
+            let myselect = '<select class="form-select" id="' + idSelect + '" required>';
+            myselect += '<option></<option>';
             for (i = 0; i < respuesta.length; i++) {
-                myselect += "<option value=" + respuesta[i].idClient + ">" + respuesta[i].name + "</option>";
+                selec = "";
+                if (opcion == respuesta[i].idClient) {
+                    selec = "selected";
+                }
+                myselect += "<option " + selec + " value=" + respuesta[i].idClient + ">" + respuesta[i].name + "</option>";
             }
             myselect += "</select >";
-            myselect += '<label for="combocliente">Cliente</label>';
+            myselect += '<label for="' + idSelect + '">Cliente</label>';
 
-            $("#client").html(myselect );
+            $(idDiv).html(myselect);
         },
-        error:function(){
+        error: function () {
             console.log('error');
         }
 
     })
 }
 
-function listarClientes(){
-    let urlA= urlApi() +"/Client/all";
+function listarClientes() {
+    let urlA = urlApi() + "/Client/all";
     $.ajax({
         url: urlA,
         type: "GET",
-        dataType:  "json",
-        success: function(respuesta){
+        dataType: "json",
+        success: function (respuesta) {
             console.log(respuesta);
             $("#listado").html("");
             pintarClientes(respuesta);
         },
-        error:function(){
+        error: function () {
             console.log('error');
         }
 
     })
 }
 
-function pintarClientes(items){
+function pintarClientes(items) {
     let myTable = '<table class="table table-bordered">';
     myTable += '<thead class="table-dark">';
     myTable += "<tr>";
-    
+
     myTable += "<th>Nombre</th>";
     myTable += "<th>eMail</th>";
     myTable += "<th>Edad</th>";
     myTable += "<th>Acciones</th>";
     myTable += "</tr>";
     myTable += "</thead><tbody>"
-    
-    for(i=0;i<items.length ;i++){
+
+    for (i = 0; i < items.length; i++) {
         myTable += "<tr>";
-        myTable += "<td>"+items[i].name+"</td>";
-        myTable += "<td>"+items[i].email+"</td>";
-        myTable += "<td>"+items[i].age+"</td>";        
+        myTable += "<td>" + items[i].name + "</td>";
+        myTable += "<td>" + items[i].email + "</td>";
+        myTable += "<td>" + items[i].age + "</td>";
         myTable += '<td>';
-        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarFinca(' + items[i].idClient + ')">Eliminar</button>';
-        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarFinca(' + items[i].idClient + ')">Actualizar</button> </td>';
+        myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarCliente(' + items[i].idClient + ')">Eliminar</button>';
+
+        myTable += '<button class="btn btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#ModalEstatico" data-bs-id="' + escape(JSON.stringify(items[i])) + '" data-bs-title="Cliente">Actualizar</button> </td>';
+
         myTable += "</tr>";
 
     }
@@ -70,22 +84,23 @@ function pintarClientes(items){
     $("#listado").html(myTable);
 }
 
-function guardarCliente(){    
-    let myData={
+function guardarCliente() {
+    let myData = {
         name: $("#name").val(),
-        email : $("#email").val(),
-        age : $("#age").val(),
-        password : $("#password").val()
+        email: $("#email").val(),
+        age: $("#age").val(),
+        password: $("#password").val()
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA= urlApi() +"/Client/save";
+    let urlA = urlApi() + "/Client/save";
     $.ajax({
         url: urlA,
         type: "POST",
-        dataType:  "json",
-        data : dataToSend,
-        contentType: 'application/json',
-        complete: function(respuesta){
+        dataType: "json",
+        data: dataToSend,
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            /*
             $("#listado").empty();
             $("#idCliente").val(""),
             $("#name").val(""),
@@ -93,70 +108,100 @@ function guardarCliente(){
             $("#age").val(""),
             $("#password").val("")
             listarClientes();
-            console.log("Guardado!");
-            
-        }   , error: function(textStatus){
+            */
+            window.location.reload();
+            alert("Se guardo correctamente");
+        },
+        error: function (textStatus) {
+            alert("No se guardo correctamente");
             console.log(textStatus)
         }
     })
 }
 
-function actualizarCliente(){
-    let myData={
-        id: $("#idCliente").val(),
-        name: $("#name").val(),
-        email : $("#email").val(),
-        age : $("#age").val(),
-        password: $("#password").val("")
+function actualizarCliente() {
+    let myData = {
+        id: $("#m_idCliente").val(),
+        name: $("#m_name").val(),
+        email: $("#m_email").val(),
+        age: $("#m_age").val(),
+        password: $("#m_password").val()
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA= urlApi() +"/Client/save";
+    let urlA = urlApi() + "/Client/update";
     $.ajax({
         url: urlA,
         type: "PUT",
-        contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
-        $("#listado").empty();
-        $("#idCliente").val(""),
-        $("#name").val(""),
-        $("#email").val(""),
-        $("#age").val("")
-        listarClientes();
-        console.log("Actualizado!");
-        console.log('SUCCESS');
-    }).fail(function (msg) {
-        console.log('FAIL');
-    }).always(function (msg) {
-        console.log('ALWAYS');
-    });    
+        dataType: "json",
+        data: dataToSend,
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            window.location.reload();
+            alert("Se actualizo correctamente");
+        },
+        error: function (textStatus) {
+            alert("No se actualizo");
+            console.log(textStatus)
+        }
+    })
 }
 
 
-function EliminarClientes(id){
-    let myData={
+function EliminarCliente(id) {
+    let myData = {
         id: id
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA= urlApi() +"/Client/delete";
+    let urlA = urlApi() + "/Client/delete/" + id;
     $.ajax({
         url: urlA,
         type: "DELETE",
-        dataType:  "json",
-        contentType: 'application/json',
-        data : dataToSend,
-    }).done(function () {
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        /*data: dataToSend,*/
+        complete: function (repuesta) {
+            /*
+            $("#listado").empty();
+            listarCategorias();
+            */
+            console.log("repuesta " + repuesta);
+            window.location.reload();
+            alert("Se elimino correctamente");
+        },
+        error: function (textStatus) {
+            console.log("textStatus " + textStatus)
+            alert("No se elimino");
+        }
+    })
+}
+
+function EliminarClienteIni(id) {
+    let myData = {
+        id: id
+    };
+    let dataToSend = JSON.stringify(myData);
+    let urlA = urlApi() + "/Client/delete";
+    $.ajax({
+        url: urlA,
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        /*data: dataToSend,*/
+    }).done(function (repuesta) {
+        /*
         $("#listado").empty();
         $("#idCliente").val(""),
         $("#name").val(""),
         $("#email").val(""),
         $("#age").val("")
         listarClientes();
-        console.log("Eliminado!");
-        console.log('SUCCESS');
-    }).fail(function (msg) {
-        console.log('FAIL');
-    }).always(function (msg) {
-        console.log('ALWAYS');
-    });    
+        */
+        console.log("repuesta " + repuesta);
+        window.location.reload();
+        alert("Se elimino correctamente");
+    })
+        .error(function (textStatus) {
+            console.log("textStatus " + textStatus)
+            alert("No se elimino");
+        });
 }

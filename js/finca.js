@@ -1,22 +1,36 @@
+
 function comboFinca() {
+    comboFinca1("#farm", "combofinca", "");
+}
+
+function comboFincaModal(opcion) {
+    comboFinca1("#m_farm", "m_combofinca", opcion);
+}
+
+function comboFinca1(idDiv, idSelect, opcion) {
     let urlA = urlApi() + "/Farm/all";
     $.ajax({
         url: urlA,
         type: "GET",
         dataType: "json",
-        success: function(respuesta) {
+        success: function (respuesta) {
             console.log(respuesta);
-            $("#farm").html("");
-            let myselect = '<select class="form-select" id="combofinca" required>';
-            myselect +='<option></<option>';
+            $(idDiv).html("");
+            let myselect = '<select class="form-select" id="' + idSelect + '" required>';
+            myselect += '<option></<option>';
             for (i = 0; i < respuesta.length; i++) {
-                myselect += "<option value=" + respuesta[i].id + ">" + respuesta[i].name + "</option>";
+                selec = "";
+                if (opcion == respuesta[i].id) {
+                    selec = "selected";
+                }
+                myselect += "<option " + selec + " value=" + respuesta[i].id + ">" + respuesta[i].name + "</option>";
+
             }
             myselect += "</select >";
-            myselect += '<label for="combofinca">Finca</label>';
-            $("#farm").html(myselect);
+            myselect += '<label for="' + idSelect + '">Finca</label>';
+            $(idDiv).html(myselect);
         },
-        error: function() {
+        error: function () {
             console.log('error');
         }
 
@@ -29,12 +43,12 @@ function listarFincas() {
         url: urlA,
         type: "GET",
         dataType: "json",
-        success: function(respuesta) {
+        success: function (respuesta) {
             console.log(respuesta);
             $("#listado").html("");
             pintarFincas(respuesta);
         },
-        error: function() {
+        error: function () {
             console.log('error');
         }
 
@@ -64,8 +78,9 @@ function pintarFincas(items) {
         myTable += "<td>" + items[i].description + "</td>";
         myTable += '<td>';
         myTable += '<button class="btn btn-danger btn-sm" onclick="EliminarFinca(' + items[i].id + ')">Eliminar</button>';
-        myTable += '<button class="btn btn btn-secondary btn-sm" onclick="ActualizarFinca(' + items[i].id + ')">Actualizar</button> </td>';
-        myTable += "</tr>";
+        
+        myTable += '<button class="btn btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#ModalEstatico" data-bs-id="' + escape(JSON.stringify(items[i])) +'" data-bs-title="Finca">Actualizar</button> </td>';    
+        
     }
     myTable += "</tbody>";
     myTable += "</table>";
@@ -93,50 +108,121 @@ function guardarFinca() {
         type: "POST",
         dataType: "json",
         data: dataToSend,
-        contentType: 'application/json',
-        complete: function(respuesta) {
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            /*
             $("#ListadoFinca").empty();
             $("#name").val(""),
-                $("#address").val(""),
-                $("#extension").val(""),
-                $("#combocategory").val(""),
-                $("#description").val("")
+            $("#address").val(""),
+            $("#extension").val(""),
+            $("#combocategory").val(""),
+            $("#description").val("")
             listarFincas();
-            console.log("Guardado!");
-
+            */
+            window.location.reload();
+            alert("Se guardo correctamente");
         },
-        error: function(textStatus) {
+        error: function (textStatus) {
+            alert("No se guardo correctamente");
             console.log(textStatus)
         }
     })
 }
 
+function actualizarFinca() {
+    var e = document.getElementById("m_combocategory");
+    var category = e.options[e.selectedIndex].value;
+    let myCate = { id: category };
+
+    let myData = {
+        id:$("#m_id").val(),
+        name: $("#m_name").val(),
+        address: $("#m_address").val(),
+        extension: $("#m_extension").val(),
+        category: myCate,
+        description: $("#m_description").val()
+
+    };
+    let dataToSend = JSON.stringify(myData);
+
+    let urlA = urlApi() + "/Farm/update";
+    $.ajax({
+        url: urlA,
+        type: "PUT",
+        dataType: "json",
+        data: dataToSend,
+        contentType: "application/json; charset=utf-8",
+        complete: function (respuesta) {
+            window.location.reload();
+            alert("Se guardo correctamente");
+        },
+        error: function (textStatus) {
+            alert("No se guardo correctamente");
+            console.log(textStatus)
+        }
+    })
+}
+
+function EliminarFinca(id) {
+    let myData = {
+        id: id
+    };
+    let dataToSend = JSON.stringify(myData);
+    let urlA = urlApi() + "/Farm/delete/" + id;
+    $.ajax({
+        url: urlA,
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        /*data: dataToSend,*/
+        complete: function (repuesta) {
+            /*
+            $("#ListadoFinca").empty();
+            $("#idFinca").val(""),
+            $("#nameFinca").val(""),
+            $("#addressFinca").val(""),
+            $("#extensionFinca").val(""),
+            $("#categoriaFinca").val("")
+            listarFincas();
+            */
+            console.log("repuesta " + repuesta);
+            window.location.reload();
+            alert("Se elimino correctamente");
+        },
+        error: function (xhr, textStatus) {
+            console.log("textStatus " + textStatus)
+            alert("No se elimino");
+        }
+    })
+}
 
 function EliminarFincas(id) {
     let myData = {
         id: id
     };
     let dataToSend = JSON.stringify(myData);
-    let urlA = urlApi() + "/Farm/delete";
+    let urlA = urlApi() + "/Farm/delete" + id;
     $.ajax({
         url: urlA,
         type: "DELETE",
         dataType: "json",
-        contentType: 'application/json',
-        data: dataToSend,
-    }).done(function() {
+        contentType: "application/json; charset=utf-8",
+        /*data: dataToSend,*/
+    }).done(function () {
+        /*
         $("#ListadoFinca").empty();
         $("#idFinca").val(""),
-            $("#nameFinca").val(""),
-            $("#addressFinca").val(""),
-            $("#extensionFinca").val(""),
-            $("#categoriaFinca").val("")
+        $("#nameFinca").val(""),
+        $("#addressFinca").val(""),
+        $("#extensionFinca").val(""),
+        $("#categoriaFinca").val("")
         listarFincas();
-        console.log("Eliminado!");
-        console.log('SUCCESS');
-    }).fail(function(msg) {
-        console.log('FAIL');
-    }).always(function(msg) {
+        */
+        window.location.reload();
+        alert("Se elimino correctamente");
+    }).fail(function () {
+        alert("No se elimino");
+    }).always(function (msg) {
         console.log('ALWAYS');
-    });
-}
+    })
+};

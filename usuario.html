@@ -5,39 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Categorias</title>
+    <title>Usuarios</title>
     <link rel='stylesheet' type='text/css' media='screen' href='./css/maquetado.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./css/bootstrap.css'>
 
 </head>
 
-<body onload="modal(); validacion(); listarFincas(); comboCategoria(); ">
+<body onload="modal(); validacion(); listarUsuarios();">
     <div class="contenedor">
         <header class="menus">
         </header>
         <div class="titulo">
-            <h1>Fincas</h1>
+            <h1>Usuarios Administradores</h1>
         </div>
         <div class="formulario">
-            <form class="campos needs-validation" action="javascript:guardarFinca();" novalidate>
+            <form class="campos needs-validation" action="javascript:guardarUsuario();" novalidate>
                 <div class="form-floating mb-3">
                     <input type="text" id="name" class="form-control" required placeholder="Nombre">
-                    <label for="name" >Nombre</label>
+                    <label for="name">Nombre</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <textarea id="description" class="form-control" required placeholder="Descripción"></textarea>
-                    <label for="description" >Descripción</label>
+                    <input type="email" id="email" class="form-control" required placeholder="eMail">
+                    <label for="email">eMail</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" id="address" class="form-control" required placeholder="Dirección">
-                    <label for="address" >Dirección</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="number" id="extension" class="form-control" required placeholder="Extensión">
-                    <label for="extension" >Extensión</label>
-                </div>
-                <div class="form-floating mb-3" id="category">
-                    
+                    <input type="password" id="password" class="form-control" required placeholder="Contraseña">
+                    <label for="password">Contraseña</label>
                 </div>
                 <div class="boton">
                     <button type="submit" class="btn btn-outline-primary" value="Guardar">Guardar</button>
@@ -50,17 +43,17 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="ModalEstatico" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalToggleLabel">Actualizar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" >
-                    <form class="campos needs-validation" id="fModal" action="javascript:actualizarFinca();"
+                <div class="modal-body">
+                    <form class="campos needs-validation" id="fModal" action="javascript:actualizarUsuario();"
                         novalidate>
                         <div class="form-floating mb-3">
                             <input type="number" id="m_id" class="form-control" required placeholder="id" hidden="true">
@@ -71,22 +64,14 @@
                             <label for="m_name">Nombre</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea id="m_description" class="form-control" required placeholder="Descripción"></textarea>
-                            <label for="m_description">Descripción</label>
-                        </div>
-                        
-                        <div class="form-floating mb-3">
-                            <input type="text" id="m_address" class="form-control" required placeholder="Dirección">
-                            <label for="m_address" >Dirección</label>
+                            <input type="email" id="m_email" class="form-control" required placeholder="eMail">
+                            <label for="m_email">eMail</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" id="m_extension" class="form-control" required placeholder="Extensión">
-                            <label for="m_extension" >Extensión</label>
+                            <input type="password" id="m_password" class="form-control" required
+                                placeholder="Contraseña">
+                            <label for="m_password">Contraseña</label>
                         </div>
-                        <div class="form-floating mb-3" id="m_category">
-                            
-                        </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" value="Guardar">Guardar</button>
@@ -97,15 +82,13 @@
         </div>
     </div>
 
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="./js/general.js"></script>
-    <script type="text/javascript" src="./js/finca.js"></script>
-    <script type="text/javascript" src="./js/categoria.js"></script>
+    <script type="text/javascript" src="./js/usuario.js"></script>
     <script type="text/javascript" src="./js/bootstrap.bundle.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.menus').load('./menu.html');
         });
     </script>
