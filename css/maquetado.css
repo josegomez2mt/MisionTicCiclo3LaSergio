@@ -5,7 +5,7 @@ El fondo y el sistema de menus
 body {
     margin: 0;
     /* Aquí el origen de la imagen */
-    background-image: url(../image/fondo.webp);
+    background-image: url(../image/fondo.jpeg);
     /* Fijar la imagen de fondo este vertical y
         horizontalmente y centrado */
     background-position: center center;
