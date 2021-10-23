@@ -143,8 +143,7 @@ function actualizarReserva(){
             alert("Se actualizo correctamente");
         },
         error: function (textStatus) {
-            alert("No se actualizo");
-            console.log(textStatus)
+            console.log(textStatus);
         }
     })
 }
@@ -176,8 +175,7 @@ function EliminarReserva(id){
             alert("Se elimino correctamente");
         },
         error: function (textStatus) {
-            console.log("textStatus "+ textStatus)
-            alert("No se elimino");
+            console.log("textStatus "+ textStatus);
         }
     });
 }

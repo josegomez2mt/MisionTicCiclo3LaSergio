@@ -124,8 +124,7 @@ function EliminarUsuario(id) {
             alert("Se elimino correctamente");
         },
         error: function (textStatus) {
-            console.log("textStatus "+ textStatus)
-            alert("No se elimino");
+            console.log("textStatus "+ textStatus);
         }
     })
 }

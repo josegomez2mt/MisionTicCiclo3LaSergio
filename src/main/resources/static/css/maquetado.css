@@ -4,7 +4,7 @@ El fondo y el sistema de menus
 
 body {
     margin: 0;
-    /* Aquí el origen de la imagen */
+    /* Aqui el origen de la imagen */
     background-image: url(../image/fondo.jpeg);
     /* Fijar la imagen de fondo este vertical y
         horizontalmente y centrado */
@@ -15,7 +15,7 @@ body {
     background-attachment: fixed;
     /* La imagen ocupa el 100% y se reescala */
     background-size: cover;
-    /* Damos un color de fondo mientras la imagen está cargando  */
+    /* Damos un color de fondo mientras la imagen esta cargando  */
     background-color: #e9ebee;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -193,7 +193,7 @@ body,
 
 
 /*
-Presentación varia
+Presentacion varia
 */
 
 

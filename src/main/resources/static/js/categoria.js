@@ -151,19 +151,13 @@ function EliminarCategoria(id) {
         type: "DELETE",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        /*data: dataToSend,*/
         complete: function (repuesta) {
-            /*
-            $("#listado").empty();
-            listarCategorias();
-            */
             console.log("repuesta " + repuesta);
             window.location.reload();
             alert("Se elimino correctamente");
         },
         error: function (textStatus) {
-            console.log("textStatus " + textStatus)
-            alert("No se elimino");
+            console.log("textStatus " + textStatus)            
         }
     });
 }

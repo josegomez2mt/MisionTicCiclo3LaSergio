@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single sign on with github</title>
+
+
+    <base href="/" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <link rel='stylesheet' type='text/css' href='/css/maquetado.css' />
+
+</head>
+
+<body>
+    <div id="navbar" class="barra">
+        <div id="logo" class="reverse">            
+            <div class="logo">Deluxe <span>Fincas</span></div>
+        </div>
+    </div>
+
+        
+    <div class="titulo noautenticado">
+        Iniciar Session: <a href="/oauth2/authorization/github" class="btn btn-outline-primary">Click aqui</a>
+    </div>
+    <div class="container autenticado" style="display: none;">
+        Autenticado como <span id="user"> </span>
+        <div>
+            <button onClick="logout()" class="btn btn-primary">Logout</button>
+        </div>
+    </div>
+
+    </div>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"> </script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (settings.type == 'POST' || settings.type == 'PUT'
+                    || settings.type == 'DELETE') {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/
+                        .test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-XSRF-TOKEN",
+                            Cookies.get('XSRF-TOKEN'));
+                    }
+                }
+            }
+        });
+
+        $.get('/user', function (data) {
+            $('#user').html(data.name);
+            $('.noautenticado').hide();
+            $('.autenticado').show();
+        });
+        var logout = function () {
+            $.post("/logout", function () {
+                $("#user").html('');
+                $(".noautenticado").show();
+                $(".autenticado").hide();
+            })
+            return true;
+        }
+
+    </script>
+
+</body>
+
+</html>
